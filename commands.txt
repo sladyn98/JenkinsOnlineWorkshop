@@ -1,0 +1,64 @@
+# This file is a list of commands to follow while working through the jenkins workshop
+# This file makes it easier to have a look at the commands I am running
+# Pre-requisites : Jenkins.war and  JDK
+
+# To install all the required plugins using plugin install manager
+java -jar jenkins-plugin-manager-1.0.1.jar --war /home/sladyn/Jenkins/JenkinsWAR/jenkins.war --plugin-file plugins.yml 
+
+
+#Jenkins on AWS
+
+# Step 1 : Connect to aws instance
+# I am using a centos system, you can use an ubuntu system as well
+chmod 400 JenkinsWorkshop.pem      ----> Give permissions
+ssh -i "JenkinsWorkshop.pem" centos@ec2-13-233-51-2.ap-south-1.compute.amazonaws.com
+# update the instance
+sudo yum update
+java -version
+# install java
+sudo yum install java-1.8.0
+# Install wget
+sudo yum install wget
+# Download latest Jenkins code package
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat/jenkins.repo
+# Import a key file from Jenkins-CI to enable installation from the package
+sudo rpm --import https://pkg.jenkins.io/redhat/jenkins.io.key
+# Install jenkisn
+sudo yum install jenkins
+# Start jenkins
+sudo service jenkins start
+# To fetch initial admin password
+ sudo su -
+ cd /var/lib/jenkins/secrets/
+ cat initialAdminPassword
+#  To stop Jenkins
+ sudo service jenkins stop
+#  To uninstall Jenkins
+ sudo service jenkins stop
+ sudo yum remove jenkins
+ sudo rm -r /var/lib/jenkins
+#  Install git ( It is important becuase jenkins uses it)
+sudo yum install git
+
+
+# Jenkins and Github integration
+
+# Step 1 would be to download the github integration plugin
+# Choose a github repository so that we can test it out in my case I have chosen sandbox as the repo
+https://github.com/sladyn98/SandBox
+# Click on the new item  and start by giving it a name 
+# Click on the freestyle project and click ok 
+# Next click on the github project and enter the link 
+# Select git as the source code management
+# Put in the repo url ending in .git
+# Next we need to choose our build triggers
+# Check GitHub hook trigger for GITScm polling	and save the settings
+# Go to github and click settings and add a webhook.
+# It will ask you for your webhook url, so the webhook url will look something like this
+#  http://13.233.51.2:8080/github-webhook/ we are telling jenkins to route it to the github plugin.
+# Choose content type to application.json.
+
+# Jenkins cli
+# All the commands that you need are already included in the jenkins CLI section :) 
+# Any help can be easily found out 
+
